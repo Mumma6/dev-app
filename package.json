@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.ts",
   "scripts": {
-    "start": "ts-node-dev ./backend/index.ts"
+    "server": "ts-node-dev ./backend/index.ts",
+    "client": "npm start --prefix frontend"
   },
   "author": "Martin Persson",
   "license": "ISC",
