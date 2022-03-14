@@ -1,8 +1,14 @@
 import express, { Application, Request, Response } from "express"
 import quiz from "./routes/quizRoutes"
+import user from './routes/userRoutes'
+import profile from './routes/profileRoutes'
 import { errorHandler } from './middleware/errorMiddleware'
+
+import { connectDB } from './config/db'
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const dotenv = require("dotenv").config()
+import 'dotenv/config'
+
+connectDB()
 
 const app: Application = express()
 const port = process.env.PORT || 5000
@@ -12,6 +18,8 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
 app.use('/api/quiz', quiz)
+app.use('/api/users', user)
+app.use('/api/profiles', profile)
 
 
 app.use(errorHandler)
