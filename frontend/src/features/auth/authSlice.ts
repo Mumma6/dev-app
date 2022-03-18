@@ -1,48 +1,64 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { RootState, AppThunk } from '../../app/store'
-import { fetchCount } from './counterAPI'
+import authAPI from './authAPI'
 
 export interface UserState {
   user: any
-  status: 'idle' | 'loading' | 'failed'
+  // status: 'idle' | 'loading' | 'failed' detta kan ersäta dom 3 undre
+  isError: boolean
+  isSuccess: boolean
+  isLoading: boolean
+  message: string
 }
 
-// Get user from LS
-const user = JSON.parse(localStorage.getItem('user') || '')
+interface User {
+  name: string
+  email: string
+  password: string
+}
+
+// Get user from LS https://stackoverflow.com/questions/67700374/use-localstorage-getitem-with-typescript
+// @ts-ignore
+const user = JSON.parse(localStorage.getItem('user'))
 
 const initialState: UserState = {
   user: user ? user : null,
-  status: 'loading',
+  isError: false,
+  isSuccess: false,
+  isLoading: false,
+  message: '',
 }
 
 // Register user
-export const register = createAsyncThunk('auth/register', async (user, thunkAPI) => {
+export const register = createAsyncThunk('auth/register', async (user: User, thunkAPI) => {
   try {
-    return await authService.register(user)
-  } catch (error) {
+    return await authAPI.register(user)
+  } catch (error: any) {
     const message =
       (error.response && error.response.data && error.response.data.message) ||
       error.message ||
       error.toString()
-    return thunkAPI.rejectWithValue(message)
-  }
-})
-
-// Login user
-export const login = createAsyncThunk('auth/login', async (user, thunkAPI) => {
-  try {
-    return await authService.login(user)
-  } catch (error) {
-    const message =
-      (error.response && error.response.data && error.response.data.message) ||
-      error.message ||
-      error.toString()
+      // this is register.rejected
     return thunkAPI.rejectWithValue(message)
   }
 })
 
 export const logout = createAsyncThunk('auth/logout', async () => {
-  await authService.logout()
+  await authAPI.logout()
+})
+
+// Login user
+export const login = createAsyncThunk('auth/login', async (user: { email: string, password: string }, thunkAPI) => {
+  try {
+    return await authAPI.login(user)
+  } catch (error: any) {
+    const message =
+      (error.response && error.response.data && error.response.data.message) ||
+      error.message ||
+      error.toString()
+      // this is register.rejected
+    return thunkAPI.rejectWithValue(message)
+  }
 })
 
 export const authSlice = createSlice({
@@ -69,7 +85,7 @@ export const authSlice = createSlice({
       .addCase(register.rejected, (state, action) => {
         state.isLoading = false
         state.isError = true
-        state.message = action.payload
+        state.message = action.payload as string
         state.user = null
       })
       .addCase(login.pending, (state) => {
@@ -83,7 +99,7 @@ export const authSlice = createSlice({
       .addCase(login.rejected, (state, action) => {
         state.isLoading = false
         state.isError = true
-        state.message = action.payload
+        state.message = action.payload as string
         state.user = null
       })
       .addCase(logout.fulfilled, (state) => {
