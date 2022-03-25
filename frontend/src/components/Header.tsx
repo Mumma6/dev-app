@@ -16,7 +16,6 @@ const Header = () => {
   const onLogout = () => {
     dispatch(logout())
     dispatch(reset())
-
     navigate('/')
   }
 
@@ -32,18 +31,21 @@ const Header = () => {
               <Link to="/dashboard" className="nav-link">
                 <FaHome /> Dashboard
               </Link>
-              <Button style={{ marginLeft: 10 }} variant='danger' size="sm" onClick={onLogout}>
+              <Button style={{ marginLeft: 10 }} variant="danger" size="sm" onClick={onLogout}>
                 <FaSignOutAlt />
                 Logout
               </Button>
             </>
           ) : (
             <>
+              <Link to="/about" className="nav-link">
+                About
+              </Link>
+              <Link to="/mission" className="nav-link">
+                Mission
+              </Link>
               <Link to="/login" className="nav-link">
                 <FaSignInAlt /> Login
-              </Link>
-              <Link to="/register" className="nav-link">
-                <FaUser /> Register
               </Link>
             </>
           )}

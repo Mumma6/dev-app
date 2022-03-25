@@ -11,6 +11,8 @@ import Landing from './pages/Landing'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import Header from './components/Header'
 import { Container } from 'react-bootstrap'
+import About from './pages/About'
+import Mission from './pages/Mission'
 
 function App() {
   return (
@@ -20,6 +22,8 @@ function App() {
         <Container>
           <Routes>
             <Route path="/" element={<Landing />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/mission" element={<Mission />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
