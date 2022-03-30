@@ -13,8 +13,9 @@ const comparePassword = async (password: string, userPassword: string) =>
   await bcrypt.compare(password, userPassword)
 
 // generate jwt
+const secret = 'abc123'
 const generateToken = (id: string) =>
-  jwt.sign({ id }, process.env.JWT_SECRET!, {
+  jwt.sign({ id }, process.env.JWT_SECRET || secret, {
     expiresIn: '30d',
   })
 
@@ -68,6 +69,8 @@ const loginUser = asyncHandler(async (req: Request, res: Response) => {
 
   // check for user email
   const user = await User.findOne({ email })
+
+  console.log(user)
 
   // check password
   if (user && (await comparePassword(password, user.password))) {

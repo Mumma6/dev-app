@@ -1,25 +1,37 @@
-import mongoose from 'mongoose'
+import mongoose from "mongoose";
 
 export interface IQuiz extends mongoose.Document {
-  text: string
+  description: string;
+  difficulty: number,
+  questions: any,
 }
 
 const quizSchema = new mongoose.Schema(
   {
-    text: {
+    description: {
       type: String,
       required: true,
     },
+    difficulty: {
+      type: Number,
+      required: true,
+    },
+    questions: [
+      {
+        title: String,
+        answer: String,
+        options: [String],
+      },
+    ],
   },
   {
     timestamps: true,
   }
-)
+);
 
-const Quiz = mongoose.model<IQuiz>('Quiz', quizSchema)
+const Quiz = mongoose.model<IQuiz>("Quiz", quizSchema);
 
-export default Quiz
-
+export default Quiz;
 
 // Quiz är inte kopplat till en user, Däremot så kommer profile vara det.
 
