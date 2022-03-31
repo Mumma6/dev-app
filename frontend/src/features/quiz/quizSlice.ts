@@ -2,10 +2,11 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 
 import quizAPI from "./quizAPI"
 
-interface Question {
+export interface Question {
   title: string
   answer: string
   options: string[]
+  _id: string
 }
 
 export interface Quiz {

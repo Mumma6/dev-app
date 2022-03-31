@@ -1,15 +1,15 @@
-import { Button, Form, Container, Spinner } from 'react-bootstrap'
-import { FaSignInAlt } from 'react-icons/fa'
-import React, { useState, useEffect, ChangeEvent, SyntheticEvent } from 'react'
-import { useAppSelector, useAppDispatch } from '../../app/hooks'
-import { useNavigate } from 'react-router-dom'
-import { toast } from 'react-toastify'
-import { login, reset } from './authSlice'
+import { Button, Form, Container, Spinner } from "react-bootstrap"
+import { FaSignInAlt } from "react-icons/fa"
+import React, { useState, useEffect, ChangeEvent, SyntheticEvent } from "react"
+import { useAppSelector, useAppDispatch } from "../../app/hooks"
+import { useNavigate } from "react-router-dom"
+import { toast } from "react-toastify"
+import { login, reset } from "./authSlice"
 
 const Login = () => {
   const [formData, setFormData] = useState({
-    email: '',
-    password: '',
+    email: "",
+    password: "",
   })
 
   const { email, password } = formData
@@ -17,7 +17,9 @@ const Login = () => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
 
-  const { user, isLoading, isError, isSuccess, message } = useAppSelector((state) => state.auth)
+  const { user, isLoading, isError, isSuccess, message } = useAppSelector(
+    (state) => state.auth
+  )
 
   useEffect(() => {
     if (isError) {
@@ -25,7 +27,7 @@ const Login = () => {
     }
 
     if (isSuccess || user) {
-      navigate('/dashboard')
+      navigate("/dashboard")
     }
 
     dispatch(reset())
@@ -75,7 +77,7 @@ const Login = () => {
         marginTop: 40,
         paddingTop: 20,
         paddingBottom: 20,
-        backgroundColor: 'white',
+        backgroundColor: "white",
         width: 600,
       }}
     >
@@ -105,7 +107,9 @@ const Login = () => {
             placeholder="Password"
           />
         </Form.Group>
-        <div className="d-grid gap-2">{isLoading ? spinnerButton() : button()}</div>
+        <div className="d-grid gap-2">
+          {isLoading ? spinnerButton() : button()}
+        </div>
       </Form>
     </Container>
   )
