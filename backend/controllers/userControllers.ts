@@ -14,6 +14,7 @@ const comparePassword = async (password: string, userPassword: string) =>
 
 // generate jwt
 const secret = 'abc123'
+// se till att avända samma secret som i authMiddleWare
 const generateToken = (id: string) =>
   jwt.sign({ id }, process.env.JWT_SECRET || secret, {
     expiresIn: '30d',

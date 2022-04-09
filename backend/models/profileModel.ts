@@ -1,18 +1,24 @@
 import mongoose from 'mongoose'
 
+interface ExternalCourse {
+  title: string,
+  link: string,
+  description: string,
+}
+
 export interface IProfile extends mongoose.Document {
   user: string
   skills: string[]
   bio: string
   lookingForJob: boolean,
+  externalCourses: ExternalCourse[]
 }
 
 const profileSchema = new mongoose.Schema(
   {
-    user: {
-      type: mongoose.Schema.Types.ObjectId,
+    user: { // detta är egentligen user_id: string
+      type: String,
       required: true,
-      ref: 'User',
     },
     skills: {
       type: [String],
@@ -23,7 +29,14 @@ const profileSchema = new mongoose.Schema(
     },
     lookingForJob: {
       type: Boolean,
-    }
+    },
+    externalCourses: [
+      {
+        title: String,
+        link: String,
+        description: String,
+      },
+    ],
     // type. ska defaula till user?, admin, premium och recruiter.
   },
   {

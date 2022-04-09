@@ -1,26 +1,28 @@
 import { Request, Response } from 'express'
 import asyncHandler from 'express-async-handler'
+import mongoose from 'mongoose'
 
 import Profile, { IProfile } from '../models/profileModel'
+import User, { IUser } from '../models/userModel'
+
+interface UserResquest extends Request { // varför funkar inte detta med asynchandler
+  user: any
+}
 
 // @desc Get all profiles
 // @route GET /api/profiles
 // @access public
 const getProfiles = asyncHandler(async (req: Request, res: Response) => {
   const profiles: IProfile[] = await Profile.find()
-
   res.status(200).send(profiles)
 })
 
-// @route  GET api/profiles/me
+// @route  GET api/profiles/id
 // @desc   Get current user profile
 // @access Private
 const getProfile = asyncHandler(async (req: any, res: Response) => {
-  const profile = await Profile.findOne({ user: req.user.id })
+  const profile = await Profile.findOne({ user: req.params.id })
 
-  if (!profile) {
-    res.status(400).json({ msg: 'There is no profile for this user' })
-  }
 
   res.status(200).json(profile)
 })
@@ -29,13 +31,20 @@ const getProfile = asyncHandler(async (req: any, res: Response) => {
 // @desc   Create user profile
 // @access Private
 const setProfile = asyncHandler(async (req: any, res: any) => {
+  const user = User.findOne({ _id: new mongoose.Types.ObjectId(req.body.user) })
+
+  // sätt namn från user objecetet
+  // uppdatera profile att innehålla namn
+
   const profile: IProfile = await Profile.create({
     skills: req.body.skills,
-    user: req.user.id,
+    user: req.body.user,
     bio: req.body.bio,
     lookingForJob: req.body.lookingForJob,
+    externalCourses: req.body.externalCourses
   })
 
+  console.log(profile)
   res.status(200).json(profile)
 })
 
@@ -50,6 +59,7 @@ const updateProfile = asyncHandler(async (req: any, res: Response) => {
     throw new Error('profile not found')
   }
 
+  /*
   // Check for user
   if (!req.user) {
     res.status(401)
@@ -61,6 +71,7 @@ const updateProfile = asyncHandler(async (req: any, res: Response) => {
     res.status(401)
     throw new Error('User not authorized')
   }
+  */
 
   const updatedGoal = await Profile.findByIdAndUpdate(req.params.id, req.body, {
     new: true,

@@ -6,12 +6,12 @@ import { protect } from '../middleware/authMiddleware'
 // Register user
 profiles.get('/', getProfiles)
 
-profiles.get('/:id', protect, getProfile)
+profiles.get('/:id', getProfile)
 
-profiles.post('/', protect, setProfile)
+profiles.post('/create', setProfile)
 
-profiles.put('/:id', protect, updateProfile)
+profiles.put('/:id', updateProfile)
 
-profiles.delete('/:id', protect, deleteProfile)
+profiles.delete('/:id', deleteProfile)
 
 export default profiles
