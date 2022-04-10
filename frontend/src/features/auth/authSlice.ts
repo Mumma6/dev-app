@@ -2,19 +2,20 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { RootState, AppThunk } from '../../app/store'
 import authAPI from './authAPI'
 
+interface User {
+  name: string
+  email: string
+  password: string
+  _id?: string,
+}
+
 export interface UserState {
-  user: any
+  user: any // User | null
   // status: 'idle' | 'loading' | 'failed' detta kan ersäta dom 3 undre
   isError: boolean
   isSuccess: boolean
   isLoading: boolean
   message: string
-}
-
-interface User {
-  name: string
-  email: string
-  password: string
 }
 
 // Get user from LS https://stackoverflow.com/questions/67700374/use-localstorage-getitem-with-typescript

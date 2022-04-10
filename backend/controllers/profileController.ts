@@ -5,9 +5,6 @@ import mongoose from 'mongoose'
 import Profile, { IProfile } from '../models/profileModel'
 import User, { IUser } from '../models/userModel'
 
-interface UserResquest extends Request { // varför funkar inte detta med asynchandler
-  user: any
-}
 
 // @desc Get all profiles
 // @route GET /api/profiles
@@ -20,9 +17,11 @@ const getProfiles = asyncHandler(async (req: Request, res: Response) => {
 // @route  GET api/profiles/id
 // @desc   Get current user profile
 // @access Private
-const getProfile = asyncHandler(async (req: any, res: Response) => {
-  const profile = await Profile.findOne({ user: req.params.id })
+// frontend will take care of if its the users own profile (dashboard) or another profile.
 
+// or make a getMe controller https://github.com/Mumma6/pt-portalen/blob/master/routes/api/profile.js
+const getProfile = asyncHandler(async (req: any, res: Response) => {
+  const profile = await Profile.findOne({ "user._id": req.params.id })
 
   res.status(200).json(profile)
 })
@@ -30,21 +29,24 @@ const getProfile = asyncHandler(async (req: any, res: Response) => {
 // @route  POST api/profiles
 // @desc   Create user profile
 // @access Private
-const setProfile = asyncHandler(async (req: any, res: any) => {
-  const user = User.findOne({ _id: new mongoose.Types.ObjectId(req.body.user) })
+const setProfile = asyncHandler(async (req: Request, res: any) => {
 
   // sätt namn från user objecetet
   // uppdatera profile att innehålla namn
+
+  console.log(req.body)
 
   const profile: IProfile = await Profile.create({
     skills: req.body.skills,
     user: req.body.user,
     bio: req.body.bio,
     lookingForJob: req.body.lookingForJob,
-    externalCourses: req.body.externalCourses
+    externalCourses: req.body.externalCourses,
+    title: req.body.title,
+    location: req.body.location
   })
 
-  console.log(profile)
+  console.log(profile, 'from backend')
   res.status(200).json(profile)
 })
 

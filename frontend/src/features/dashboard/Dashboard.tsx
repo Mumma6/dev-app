@@ -1,20 +1,31 @@
-import React, { useEffect } from 'react'
+import React, { useEffect } from "react"
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
-import { getUserProfile } from './profileSlice'
+import { getUserProfile } from "./profileSlice"
+import DashboardCreateForm from "./DashboardCreateForm"
+import DashboardProfilePage from "./DashboardProfilePage"
 
 const Dashboard = () => {
   const dispatch = useAppDispatch()
 
-  const { userProfile } = useAppSelector((state) => state.profile)
+  const { userProfile, isLoading } = useAppSelector((state) => state.profile)
   const { user } = useAppSelector((state) => state.auth)
 
   useEffect(() => {
-    dispatch(getUserProfile(user._id))
-  }, [dispatch, user._id])
+    dispatch(getUserProfile(user?._id || ''))
+  }, [dispatch, user?._id])
 
-  console.log(userProfile)
+  if (isLoading && !userProfile) {
+    return <p>laddar</p>
+  }
+
   return (
-    <div>Dashboard ska in under features</div>
+    <>
+      {!userProfile ? (
+        <DashboardCreateForm />
+      ) : (
+        <DashboardProfilePage userProfile={userProfile} />
+      )}
+    </>
   )
 }
 

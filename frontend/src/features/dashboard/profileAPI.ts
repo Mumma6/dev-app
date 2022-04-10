@@ -8,15 +8,21 @@ interface ExternalCourse {
   description: string,
 }
 
+export interface User {
+  _id: string,
+  name: string,
+  email: string,
+}
 
 export interface ProfileData {
   skills: string[]
   bio: string
   lookingForJob: boolean,
-  externalCourses: ExternalCourse[]
+  externalCourses?: ExternalCourse[]
+  user: User,
+  title: string,
+  location: string,
 }
-
-
 
 const getProfileForUser = async (id: string, token: string) => {
   const config = {
@@ -26,13 +32,11 @@ const getProfileForUser = async (id: string, token: string) => {
   }
   const response = await axios.get(API_URL + id, config)
 
-  console.log(response)
   return response.data
 }
 
 const createProfile = async (profileData: ProfileData) => {
-  const response = await axios.post(API_URL, profileData)
-
+  const response = await axios.post(API_URL + 'create', profileData)
   return response.data
 }
 

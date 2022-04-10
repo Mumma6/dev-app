@@ -6,8 +6,14 @@ interface ExternalCourse {
   description: string,
 }
 
+interface User {
+  _id: string,
+  name: string,
+  email: string,
+}
+
 export interface IProfile extends mongoose.Document {
-  user: string
+  user: User
   skills: string[]
   bio: string
   lookingForJob: boolean,
@@ -16,15 +22,28 @@ export interface IProfile extends mongoose.Document {
 
 const profileSchema = new mongoose.Schema(
   {
-    user: { // detta är egentligen user_id: string
-      type: String,
-      required: true,
+    user: {
+      _id: {
+        type: String,
+      },
+      name: {
+        type: String,
+      },
+      email: {
+        type: String,
+      },
     },
     skills: {
       type: [String],
       required: true
     },
     bio: {
+      type: String
+    },
+    title: {
+      type: String
+    },
+    location: {
       type: String
     },
     lookingForJob: {

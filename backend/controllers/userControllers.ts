@@ -87,17 +87,5 @@ const loginUser = asyncHandler(async (req: Request, res: Response) => {
   }
 })
 
-// @desc Get user date
-// @route GET /api/users/me
-// @access Private
-const getMe = asyncHandler(async (req: any, res: Response) => {
-  const { _id, name, email }: IUser = await User.findById(req.user.id) as IUser
 
-  res.status(200).json({
-    id: _id,
-    name,
-    email,
-  })
-})
-
-export { registerUser, loginUser, getMe }
+export { registerUser, loginUser }

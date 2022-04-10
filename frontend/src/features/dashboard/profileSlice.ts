@@ -46,6 +46,10 @@ export const createUserProfile = createAsyncThunk(
   }
 )
 
+// get all profiles
+
+// get profile by id
+
 export const profileSlice = createSlice({
   name: "profile",
   initialState,
