@@ -1,10 +1,9 @@
-import { Request, Response } from 'express'
-import asyncHandler from 'express-async-handler'
-import mongoose from 'mongoose'
+import { Request, Response } from "express"
+import asyncHandler from "express-async-handler"
+import mongoose from "mongoose"
 
-import Profile, { IProfile } from '../models/profileModel'
-import User, { IUser } from '../models/userModel'
-
+import Profile, { IProfile } from "../models/profileModel"
+import User, { IUser } from "../models/userModel"
 
 // @desc Get all profiles
 // @route GET /api/profiles
@@ -30,7 +29,6 @@ const getProfile = asyncHandler(async (req: any, res: Response) => {
 // @desc   Create user profile
 // @access Private
 const setProfile = asyncHandler(async (req: Request, res: any) => {
-
   // sätt namn från user objecetet
   // uppdatera profile att innehålla namn
 
@@ -43,22 +41,23 @@ const setProfile = asyncHandler(async (req: Request, res: any) => {
     lookingForJob: req.body.lookingForJob,
     externalCourses: req.body.externalCourses,
     title: req.body.title,
-    location: req.body.location
+    location: req.body.location,
+    social: req.body.social,
   })
 
-  console.log(profile, 'from backend')
+  console.log(profile, "from backend")
   res.status(200).json(profile)
 })
 
 // @desc    Update profile
 // @route   PUT api/profiles/:id
 // @access  Private
-const updateProfile = asyncHandler(async (req: any, res: Response) => {
-  const profile = await Profile.findById(req.params.id)
+const updateProfile = asyncHandler(async (req: Request, res: Response) => {
+  const profile = await Profile.findOne({ "user._id": req.params.id })
 
   if (!profile) {
     res.status(400)
-    throw new Error('profile not found')
+    throw new Error("profile not found")
   }
 
   /*
@@ -75,34 +74,44 @@ const updateProfile = asyncHandler(async (req: any, res: Response) => {
   }
   */
 
-  const updatedGoal = await Profile.findByIdAndUpdate(req.params.id, req.body, {
-    new: true,
-  })
+  console.log("before", profile)
 
-  res.status(200).json(updatedGoal)
+  const updatedProfile = await Profile.findByIdAndUpdate(
+    profile._id,
+    req.body,
+    {
+      new: true,
+    }
+  )
+
+  console.log("after,", updatedProfile)
+
+  console.log(req.body)
+
+  res.status(200).json(updatedProfile)
 })
 
 // @desc    Delete profile
 // @route   DELETE api/profiles/:id
 // @access  Private
 const deleteProfile = asyncHandler(async (req: any, res: Response) => {
-  const profile = await Profile.findById(req.params.id)
+  const profile = await Profile.findOne({ "user._id": req.params.id })
 
   if (!profile) {
     res.status(400)
-    throw new Error('Goal not found')
+    throw new Error("Goal not found")
   }
 
   // Check for user
   if (!req.user) {
     res.status(401)
-    throw new Error('User not found')
+    throw new Error("User not found")
   }
 
   // Make sure the logged in user matches the goal user
   if (profile.user.toString() !== req.user.id) {
     res.status(401)
-    throw new Error('User not authorized')
+    throw new Error("User not authorized")
   }
 
   await Profile.remove()

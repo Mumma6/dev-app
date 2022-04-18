@@ -2,7 +2,14 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 
 import profileAPI, { ProfileData } from "./profileAPI"
 
-const initialState = {
+interface State {
+  userProfile: undefined | ProfileData
+  profiles: any[]
+  isLoading: boolean
+  errorMsg: string
+}
+
+const initialState: State = {
   userProfile: undefined,
   profiles: [],
   isLoading: false,
@@ -33,6 +40,29 @@ export const createUserProfile = createAsyncThunk(
   async (data: ProfileData, thunkAPI) => {
     try {
       return await profileAPI.createProfile(data)
+    } catch (error: any) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString()
+      // this is rejected
+      return thunkAPI.rejectWithValue(message)
+    }
+  }
+)
+
+interface UpdateData {
+  id: string
+  profileData?: any //ProfileData
+}
+
+export const updateUserProfile = createAsyncThunk(
+  "profile/update",
+  async (data: UpdateData, thunkAPI) => {
+    try {
+      return await profileAPI.updateProfile(data)
     } catch (error: any) {
       const message =
         (error.response &&
@@ -79,6 +109,17 @@ export const profileSlice = createSlice({
         state.userProfile = action.payload
       })
       .addCase(createUserProfile.rejected, (state, action) => {
+        state.isLoading = false
+        state.errorMsg = action.payload as string
+      })
+      .addCase(updateUserProfile.pending, (state) => {
+        state.isLoading = true
+      })
+      .addCase(updateUserProfile.fulfilled, (state, action) => {
+        state.isLoading = false
+        state.userProfile = action.payload
+      })
+      .addCase(updateUserProfile.rejected, (state, action) => {
         state.isLoading = false
         state.errorMsg = action.payload as string
       })

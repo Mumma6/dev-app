@@ -1,23 +1,31 @@
-import mongoose from 'mongoose'
+import mongoose from "mongoose"
 
 interface ExternalCourse {
-  title: string,
-  link: string,
-  description: string,
+  title: string
+  link: string
+  description: string
 }
 
 interface User {
-  _id: string,
-  name: string,
-  email: string,
+  _id: string
+  name: string
+  email: string
+}
+
+interface Social {
+  twitter: string
+  linkedin: string
+  website: string
+  github: string
 }
 
 export interface IProfile extends mongoose.Document {
   user: User
   skills: string[]
   bio: string
-  lookingForJob: boolean,
+  lookingForJob: boolean
   externalCourses: ExternalCourse[]
+  social: Social
 }
 
 const profileSchema = new mongoose.Schema(
@@ -35,16 +43,16 @@ const profileSchema = new mongoose.Schema(
     },
     skills: {
       type: [String],
-      required: true
+      required: true,
     },
     bio: {
-      type: String
+      type: String,
     },
     title: {
-      type: String
+      type: String,
     },
     location: {
-      type: String
+      type: String,
     },
     lookingForJob: {
       type: Boolean,
@@ -56,6 +64,20 @@ const profileSchema = new mongoose.Schema(
         description: String,
       },
     ],
+    social: {
+      github: {
+        type: String,
+      },
+      linkedin: {
+        type: String,
+      },
+      twitter: {
+        type: String,
+      },
+      website: {
+        type: String,
+      },
+    },
     // type. ska defaula till user?, admin, premium och recruiter.
   },
   {
@@ -63,7 +85,7 @@ const profileSchema = new mongoose.Schema(
   }
 )
 
-const Profile = mongoose.model<IProfile>('Profile', profileSchema)
+const Profile = mongoose.model<IProfile>("Profile", profileSchema)
 
 export default Profile
 
