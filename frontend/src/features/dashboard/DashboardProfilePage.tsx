@@ -6,17 +6,29 @@ import { FaPlus } from "react-icons/fa"
 import { capitilizeFirstChar } from "../../utils/utils"
 import SocialMediaModal from "./SocialMediaModal"
 import * as Icons from "react-icons/fa"
+import ExternalCourses from "./ExternalCourses/ExternalCourses"
+import { Social, UserProfile } from "../../Models/UserProfile"
+import { Tabs } from "react-bootstrap"
+import { Tab } from "react-bootstrap"
+import "./dashboard.css"
+import Planning from "./Planning/Planning"
+import Project from "./Project/Project"
 
-const DashboardProfilePage = ({ userProfile }: any) => {
+const DashboardProfilePage = ({
+  userProfile,
+}: {
+  userProfile: UserProfile
+}): JSX.Element => {
   const [show, setShow] = useState(false)
   const handleClose = () => setShow(false)
   const handleShow = () => setShow(true)
 
   const createSocialLinks = () => {
-    const links = Object.entries<string>(userProfile.social).filter(
+    const links = Object.entries(userProfile.social as Social).filter(
       ([_, v]) => v !== ""
     )
 
+    // Detta kan in i en egen component
     const DynamicIcon = ({ name }: { name: string }) => {
       const typeString = `Fa${capitilizeFirstChar(name)}`
       // @ts-ignore
@@ -50,7 +62,7 @@ const DashboardProfilePage = ({ userProfile }: any) => {
     >
       <SocialMediaModal show={show} handleClose={handleClose} />
       <Row style={{ marginBottom: 10 }}>
-        <Col sm={12} md={4} lg={4}>
+        <Col sm={12} md={4} lg={3}>
           <Container
             style={{ backgroundColor: "white", borderRadius: 5, padding: 10 }}
           >
@@ -88,9 +100,21 @@ const DashboardProfilePage = ({ userProfile }: any) => {
           </Container>
         </Col>
         <Col>
-          <Container style={{ backgroundColor: "white", borderRadius: 5 }}>
-            Här ska alla externa kurser finnas.
-          </Container>
+          <Tabs
+            // style={{ backgroundColor: "#2E5984" }}
+            defaultActiveKey="kurser"
+            className="mb-3"
+          >
+            <Tab eventKey="kurser" title="Kurser">
+              <ExternalCourses userProfile={userProfile} />
+            </Tab>
+            <Tab eventKey="planering" title="Planering">
+              <Planning />
+            </Tab>
+            <Tab eventKey="projekt" title="Projekt">
+              <Project />
+            </Tab>
+          </Tabs>
         </Col>
       </Row>
       <Row>

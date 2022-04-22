@@ -1,16 +1,9 @@
 import React, { useState, useEffect, ChangeEvent, SyntheticEvent } from "react"
 import { Button, Container, Form } from "react-bootstrap"
 import { useAppSelector, useAppDispatch } from "../../app/hooks"
-import { ProfileData } from "./profileAPI"
+import { UserProfile } from "../../Models/UserProfile"
 
 import { createUserProfile } from "./profileSlice"
-
-interface ExternalCourse {
-  // detta kan läggas till senare
-  title: string
-  link: string
-  description: string
-}
 
 interface FormData {
   skills: string
@@ -48,7 +41,7 @@ const DashboardCreateForm = () => {
     // make array of skills.
     const skillsArray = skills.split(",")
 
-    const profileData: ProfileData = {
+    const profileData: UserProfile = {
       skills: skillsArray,
       bio,
       lookingForJob,

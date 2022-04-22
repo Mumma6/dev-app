@@ -4,6 +4,7 @@ interface ExternalCourse {
   title: string
   link: string
   description: string
+  completed: boolean
 }
 
 interface User {
@@ -19,6 +20,18 @@ interface Social {
   github: string
 }
 
+interface Link {
+  order: number
+  url: string
+  title: string
+}
+
+interface PlannedCourses {
+  title: string
+  description: string
+  links: Link[]
+}
+
 export interface IProfile extends mongoose.Document {
   user: User
   skills: string[]
@@ -26,6 +39,7 @@ export interface IProfile extends mongoose.Document {
   lookingForJob: boolean
   externalCourses: ExternalCourse[]
   social: Social
+  plannedCourses: PlannedCourses[]
 }
 
 const profileSchema = new mongoose.Schema(
@@ -62,6 +76,20 @@ const profileSchema = new mongoose.Schema(
         title: String,
         link: String,
         description: String,
+        completed: Boolean,
+      },
+    ],
+    plannedCourses: [
+      {
+        title: String,
+        description: String,
+        links: [
+          {
+            order: Number,
+            url: String,
+            title: String,
+          },
+        ],
       },
     ],
     social: {

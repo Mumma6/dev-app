@@ -10,8 +10,10 @@ const Dashboard = () => {
   const { userProfile, isLoading } = useAppSelector((state) => state.profile)
   const { user } = useAppSelector((state) => state.auth)
 
+  console.log(userProfile)
+
   useEffect(() => {
-    dispatch(getUserProfile(user?._id || ''))
+    dispatch(getUserProfile(user?._id || ""))
   }, [dispatch, user?._id])
 
   if (isLoading && !userProfile) {

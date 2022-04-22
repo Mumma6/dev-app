@@ -1,34 +1,7 @@
 import axios from "axios"
+import { UserProfile } from "../../Models/UserProfile"
 
 const API_URL = "/api/profiles/"
-
-interface ExternalCourse {
-  title: string
-  link: string
-  description: string
-}
-
-export interface User {
-  _id: string
-  name: string
-  email: string
-}
-
-export interface ProfileData {
-  skills: string[]
-  bio: string
-  lookingForJob: boolean
-  externalCourses?: ExternalCourse[]
-  user: User
-  title: string
-  location: string
-  social?: {
-    linkedin: string
-    twitter: string
-    github: string
-    website: string
-  }
-}
 
 const getProfileForUser = async (id: string, token: string) => {
   const config = {
@@ -41,14 +14,14 @@ const getProfileForUser = async (id: string, token: string) => {
   return response.data
 }
 
-const createProfile = async (profileData: ProfileData) => {
+const createProfile = async (profileData: UserProfile) => {
   const response = await axios.post(API_URL + "create", profileData)
   return response.data
 }
 
 interface UpdateData {
   id: string
-  profileData?: ProfileData
+  profileData?: UserProfile
 }
 
 const updateProfile = async (data: UpdateData) => {

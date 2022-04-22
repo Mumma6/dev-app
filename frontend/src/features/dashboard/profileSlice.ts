@@ -1,9 +1,10 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
+import { UserProfile } from "../../Models/UserProfile"
 
-import profileAPI, { ProfileData } from "./profileAPI"
+import profileAPI from "./profileAPI"
 
 interface State {
-  userProfile: undefined | ProfileData
+  userProfile: undefined | UserProfile
   profiles: any[]
   isLoading: boolean
   errorMsg: string
@@ -37,7 +38,7 @@ export const getUserProfile = createAsyncThunk(
 
 export const createUserProfile = createAsyncThunk(
   "profile/create",
-  async (data: ProfileData, thunkAPI) => {
+  async (data: UserProfile, thunkAPI) => {
     try {
       return await profileAPI.createProfile(data)
     } catch (error: any) {

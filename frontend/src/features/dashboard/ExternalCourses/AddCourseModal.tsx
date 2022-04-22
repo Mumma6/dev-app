@@ -1,41 +1,34 @@
 import { Button, Form, Modal, Spinner } from "react-bootstrap"
-import { FaGithub, FaHome, FaLinkedin, FaTwitch } from "react-icons/fa"
-import { useAppDispatch, useAppSelector } from "../../app/hooks"
-import { useForm } from "../../customHooks/useForm"
-import { updateUserProfile } from "./profileSlice"
+import { useAppDispatch, useAppSelector } from "../../../app/hooks"
+import { useForm } from "../../../customHooks/useForm"
+import { UserProfile } from "../../../Models/UserProfile"
+import { updateUserProfile } from "../profileSlice"
 
 interface Props {
   show: boolean
   handleClose: () => void
 }
 
-interface FormData {
-  linkedin: string
-  twitter: string
-  github: string
-  website: string
-}
-
-const SocialMediaModal = ({ show, handleClose }: Props) => {
+const AddCourseModal = ({ show, handleClose }: Props) => {
   const dispatch = useAppDispatch()
   const { user } = useAppSelector((state) => state.auth)
-  const { userProfile, isLoading } = useAppSelector((state) => state.profile)
-
-  const initialFormData: FormData = {
-    linkedin: userProfile?.social?.linkedin || "",
-    twitter: userProfile?.social?.twitter || "",
-    github: userProfile?.social?.github || "",
-    website: userProfile?.social?.website || "",
+  const { userProfile } = useAppSelector((state) => state.profile)
+  const initialState = {
+    title: "",
+    description: "",
+    link: "",
+    completed: true,
   }
 
-  const { formData, onChange, resetForm } = useForm(initialFormData)
+  const { formData, onChange, resetForm, onCheckboxChange } =
+    useForm(initialState)
 
-  const { linkedin, twitter, github, website } = formData
+  const { title, description, link } = formData
 
   const handleSave = () => {
     const input = {
       profileData: {
-        social: formData,
+        externalCourses: [...(userProfile?.externalCourses || []), formData],
       },
       id: user._id,
     }
@@ -73,51 +66,50 @@ const SocialMediaModal = ({ show, handleClose }: Props) => {
         <Modal.Body>
           <Form>
             <Form.Group className="mb-3">
-              <Form.Label>Linkedin</Form.Label>
-              <FaLinkedin style={{ marginLeft: 5 }} />
+              <Form.Label>Title</Form.Label>
               <Form.Control
-                name="linkedin"
-                value={linkedin}
+                name="title"
+                value={title}
+                type="text"
+                placeholder="Title"
+                onChange={onChange}
+              />
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+              <Form.Label>Description</Form.Label>
+              <Form.Control
+                name="description"
+                value={description}
+                type="text"
+                placeholder="Add description"
+                onChange={onChange}
+              />
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+              <Form.Label>Link</Form.Label>
+              <Form.Control
+                name="link"
+                value={link}
                 type="text"
                 placeholder="Enter url..."
                 onChange={onChange}
               />
             </Form.Group>
 
-            <Form.Group className="mb-3">
-              <Form.Label>Twitter</Form.Label>
-              <FaTwitch style={{ marginLeft: 5 }} />
-              <Form.Control
-                name="twitter"
-                value={twitter}
-                type="text"
-                placeholder="Enter url..."
-                onChange={onChange}
-              />
-            </Form.Group>
-
-            <Form.Group className="mb-3">
-              <Form.Label>Github</Form.Label>
-              <FaGithub style={{ marginLeft: 5 }} />
-              <Form.Control
-                name="github"
-                value={github}
-                type="text"
-                placeholder="Enter url..."
-                onChange={onChange}
-              />
-            </Form.Group>
-
-            <Form.Group className="mb-3">
-              <Form.Label>Website</Form.Label>
-              <FaHome style={{ marginLeft: 5 }} />
-              <Form.Control
-                name="website"
-                value={website}
-                type="text"
-                placeholder="Enter url..."
-                onChange={onChange}
-              />
+            <Form.Group className="mb-3" controlId="formBasicCheckbox">
+              <Form.Check type={"checkbox"}>
+                <Form.Check.Input
+                  type={"checkbox"}
+                  defaultChecked={true}
+                  name="completed"
+                  onClick={(e: any) => {
+                    onCheckboxChange(e)
+                  }}
+                />
+                <Form.Check.Label>Is the courses completed</Form.Check.Label>
+              </Form.Check>
             </Form.Group>
           </Form>
         </Modal.Body>
@@ -125,11 +117,11 @@ const SocialMediaModal = ({ show, handleClose }: Props) => {
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          {isLoading ? spinnerButton() : button()}
+          {button()}
         </Modal.Footer>
       </Modal>
     </>
   )
 }
 
-export default SocialMediaModal
+export default AddCourseModal
