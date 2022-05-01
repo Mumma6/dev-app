@@ -15,7 +15,11 @@ const ExternalCourses = ({ userProfile }: { userProfile: UserProfile }) => {
       >
         <h3>Completed courses</h3>
         {userProfile.externalCourses?.map((course) => (
-          <p>{course.title}</p>
+          <>
+            <h3>{course.title}</h3>
+            <p>{course.description}</p>
+            <p>Link: {course.link}</p>
+          </>
         ))}
       </Container>
     </>

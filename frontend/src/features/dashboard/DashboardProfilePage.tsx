@@ -62,7 +62,7 @@ const DashboardProfilePage = ({
     >
       <SocialMediaModal show={show} handleClose={handleClose} />
       <Row style={{ marginBottom: 10 }}>
-        <Col sm={12} md={4} lg={3}>
+        {/*<Col sm={12} md={4} lg={3}>
           <Container
             style={{ backgroundColor: "white", borderRadius: 5, padding: 10 }}
           >
@@ -98,7 +98,7 @@ const DashboardProfilePage = ({
               </div>
             </Container>
           </Container>
-        </Col>
+        </Col>*/}
         <Col>
           <Tabs
             // style={{ backgroundColor: "#2E5984" }}
@@ -114,27 +114,31 @@ const DashboardProfilePage = ({
             <Tab eventKey="projekt" title="Projekt">
               <Project />
             </Tab>
+            <Tab eventKey="quiz" title="Quiz">
+              <Container style={{ backgroundColor: "white", borderRadius: 5 }}>
+                Här ska alla test resultat finnas
+              </Container>
+            </Tab>
+            <Tab eventKey="social" title="Social">
+              <Container
+                style={{
+                  backgroundColor: "white",
+                  borderRadius: 5,
+                  padding: 10,
+                }}
+              >
+                <div
+                  style={{ display: "flex", justifyContent: "space-between" }}
+                >
+                  <h6>Social media links</h6>
+                  <Button onClick={handleShow} size="sm">
+                    <FaPlus />
+                  </Button>
+                </div>
+                <div>{createSocialLinks()}</div>
+              </Container>
+            </Tab>
           </Tabs>
-        </Col>
-      </Row>
-      <Row>
-        <Col sm={12} md={4} lg={4}>
-          <Container
-            style={{ backgroundColor: "white", borderRadius: 5, padding: 10 }}
-          >
-            <div style={{ display: "flex", justifyContent: "space-between" }}>
-              <h6>Social media links</h6>
-              <Button onClick={handleShow} size="sm">
-                <FaPlus />
-              </Button>
-            </div>
-            <div>{createSocialLinks()}</div>
-          </Container>
-        </Col>
-        <Col>
-          <Container style={{ backgroundColor: "white", borderRadius: 5 }}>
-            Här ska alla test resultat finnas
-          </Container>
         </Col>
       </Row>
     </Container>
