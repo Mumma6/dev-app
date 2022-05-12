@@ -1,8 +1,7 @@
-import React, { 
-  
- } from "react"
-import { Button, ButtonProps } from "react-bootstrap"
-import { Link } from "react-router-dom"
+import React from 'react'
+import { Button, ButtonProps } from 'react-bootstrap'
+import { Link } from 'react-router-dom'
+import { getCorrectUrl } from '../utils/utils'
 interface Props {
   url: string
   text: string
@@ -12,34 +11,11 @@ interface Props {
   onClickFnc?: () => void
 }
 
-const LinkButton = ({
-  url,
-  text,
-  customStyles = {},
-  props = {},
-  children,
-  onClickFnc,
-}: Props) => {
-  
-  const getLinkUrl = () => {
-    if (url === '') {
-      return '/'
-    }
-
-    if (url.startsWith('/')) {
-      return url
-    }
-
-    return '/' + url
-  }
+const LinkButton = ({ url, text, customStyles = {}, props = {}, children, onClickFnc }: Props) => {
   return (
-    <Button
-      style={{ ...customStyles, padding: 0 }}
-      onClick={onClickFnc}
-      { ...props }
-    >
-      <Link to={getLinkUrl()} className="nav-link">
-        {text }
+    <Button style={{ ...customStyles, padding: 0 }} onClick={onClickFnc} {...props}>
+      <Link to={getCorrectUrl(url)} className="nav-link">
+        {text}
         {children}
       </Link>
     </Button>

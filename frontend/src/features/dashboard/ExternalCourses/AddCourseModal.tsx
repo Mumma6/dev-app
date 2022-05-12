@@ -1,8 +1,8 @@
-import { Button, Form, Modal, Spinner } from "react-bootstrap"
-import { useAppDispatch, useAppSelector } from "../../../app/hooks"
-import { useForm } from "../../../customHooks/useForm"
-import { UserProfile } from "../../../Models/UserProfile"
-import { updateUserProfile } from "../profileSlice"
+import { Button, Form, Modal, Spinner } from 'react-bootstrap'
+import { useAppDispatch, useAppSelector } from '../../../app/hooks'
+import { useForm } from '../../../customHooks/useForm'
+import { UserProfile } from '../../../Models/UserProfile'
+import { updateUserProfile } from '../profileSlice'
 
 interface Props {
   show: boolean
@@ -14,14 +14,13 @@ const AddCourseModal = ({ show, handleClose }: Props) => {
   const { user } = useAppSelector((state) => state.auth)
   const { userProfile } = useAppSelector((state) => state.profile)
   const initialState = {
-    title: "",
-    description: "",
-    link: "",
+    title: '',
+    description: '',
+    link: '',
     completed: true,
   }
 
-  const { formData, onChange, resetForm, onCheckboxChange } =
-    useForm(initialState)
+  const { formData, onChange, resetForm, onCheckboxChange } = useForm(initialState)
 
   const { title, description, link } = formData
 
@@ -96,20 +95,6 @@ const AddCourseModal = ({ show, handleClose }: Props) => {
                 placeholder="Enter url..."
                 onChange={onChange}
               />
-            </Form.Group>
-
-            <Form.Group className="mb-3" controlId="formBasicCheckbox">
-              <Form.Check type={"checkbox"}>
-                <Form.Check.Input
-                  type={"checkbox"}
-                  defaultChecked={true}
-                  name="completed"
-                  onClick={(e: any) => {
-                    onCheckboxChange(e)
-                  }}
-                />
-                <Form.Check.Label>Is the courses completed</Form.Check.Label>
-              </Form.Check>
             </Form.Group>
           </Form>
         </Modal.Body>
